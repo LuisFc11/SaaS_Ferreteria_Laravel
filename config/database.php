@@ -5,9 +5,11 @@ return [
     'default' => env('DB_CONNECTION', 'mysql'),
 
     'connections' => [
+
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost'),
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'saas_ferreteria'),
             'username' => env('DB_USERNAME', 'root'),
@@ -19,7 +21,12 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => 'InnoDB',
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            ]) : [],
         ],
+
     ],
 
     'migrations' => [
@@ -28,4 +35,5 @@ return [
     ],
 
     'redis' => [],
+
 ];
